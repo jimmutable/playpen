@@ -13,6 +13,7 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.ProjectionEntity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 
@@ -29,39 +30,54 @@ public class TestDB
 	
 	static public void main(String args[])
 	{
+		verifyEmulator();
+		
 		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+	
 		KeyFactory keyFactory = datastore.newKeyFactory().setKind("experimental_changelog");
+		
 		
 		Query q = Query.newEntityQueryBuilder()
 				.setKind("experimental_changelog")
 				.setFilter(PropertyFilter.eq("user_id", 389789))
-				//.setOrderBy(OrderBy.asc("timestamp"))
-				//.setLimit(100)
+				.addOrderBy(OrderBy.desc("timestamp"))
+				.setLimit(100)
 				.build();
 		
-		QueryResults<Entity> results = datastore.run(q);
-		
 		long t1 = System.currentTimeMillis();
-		
-		StringBuilder builder = new StringBuilder();
-		
+
+		QueryResults<Entity> results = datastore.run(q);
+
+
+
+
 		int count = 0;
 		while (results.hasNext()) 
 		{
 			Entity entity = results.next();
-			builder.append(entity.getKey()+", "+entity.getString("short_description"));
-			builder.append("\n");
-			
+			System.out.println(entity.getKey()+", "+entity.getString("short_description"));
+
+
 			count++;
 		}
-		
-		
+
+
 		long t2 = System.currentTimeMillis();
+
+		System.out.println(String.format("Time to read %,d elements %,d",count,t2-t1));
 		
-		builder.append(String.format("Time to read %,d elements %,d",count,t2-t1));
-		
-		System.out.println(builder);
+		//createBulkEntries();
 	}
+	
+	static public void verifyEmulator()
+	{
+		String host = System.getenv().get("DATASTORE_EMULATOR_HOST");
+		if ( host != null && host.toLowerCase().startsWith("localhost:") ) return;
+		
+		System.err.println("In development environment, but using production datastore host!");
+		System.exit(0);
+	}
+	
 	static public void createBulkEntries()
 	{
 		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();

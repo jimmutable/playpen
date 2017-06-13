@@ -1,0 +1,7 @@
+indexes:
+
+- kind: experimental_changelog
+  properties:
+  - name: user_id
+  - name: timestamp
+    direction: desc
