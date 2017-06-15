@@ -149,14 +149,18 @@ public class TestDB
 		}
 		
 		IncompleteKey key = keyFactory.setKind("experimental_changelog").newKey();
+		
 		 
 		FullEntity.Builder<IncompleteKey> builder = FullEntity.newBuilder(key);
+		
 		
 		builder.set("user_id", user_id[rnd.nextInt(user_id.length)]);
 		builder.set("timestamp", rnd_date.getTime());
 		builder.set("short_description", short_description);
 		builder.set("long_description", long_description.toString());
-	
+		
+		
+		
 		return builder.build();	
 	}
 }

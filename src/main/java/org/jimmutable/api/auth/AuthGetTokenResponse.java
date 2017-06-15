@@ -1,4 +1,4 @@
-package org.jimmutable;
+package org.jimmutable.api.auth;
 
 import java.util.Objects;
 
