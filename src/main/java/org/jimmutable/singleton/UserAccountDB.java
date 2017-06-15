@@ -3,7 +3,7 @@ package org.jimmutable.singleton;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.jimmutable.api.user.UserAccount;
+import org.jimmutable.data.UserAccount;
 
 public class UserAccountDB 
 {

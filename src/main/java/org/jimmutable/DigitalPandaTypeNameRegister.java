@@ -1,9 +1,11 @@
 package org.jimmutable;
 
 import org.jimmutable.api.auth.AuthGetTokenResponse;
-import org.jimmutable.api.user.UserAccount;
+import org.jimmutable.api.user.RequestNewUserAccount;
+import org.jimmutable.api.user.ResponseNewUserAccount;
 import org.jimmutable.core.serialization.JimmutableTypeNameRegister;
 import org.jimmutable.core.serialization.reader.ObjectParseTree;
+import org.jimmutable.data.UserAccount;
 
 public class DigitalPandaTypeNameRegister 
 {
@@ -13,5 +15,8 @@ public class DigitalPandaTypeNameRegister
 		ObjectParseTree.registerTypeName(AuthGetTokenResponse.class);
 		
 		ObjectParseTree.registerTypeName(UserAccount.class);
+		
+		ObjectParseTree.registerTypeName(RequestNewUserAccount.class);
+		ObjectParseTree.registerTypeName(ResponseNewUserAccount.class);
 	}
 }
