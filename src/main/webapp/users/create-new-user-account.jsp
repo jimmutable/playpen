@@ -23,7 +23,6 @@
 	      <fieldset class="form-group">
 	      <label for="first_name">First Name*</label>
 	      <input type="text" class="form-control" id="first_name" ng-model="formData.first_name">
-	      <span ng-show="myvar == null">{{ myvar }}</span>
 	      
 	      </fieldset>
 	      
@@ -105,8 +104,10 @@
 		   	
 		   	var formFailure = function(response)
 		   	{
-		   		alert('Login Failed: '+response.data);
-		   		console.log(response);
+		   	 	if ( response.data.message == null )
+		   	 		response.data.message = "Unknown reason, invalid data";
+		   	 	
+		   		alert('Account creation failed: '+response.data.message);
 		   	}
 		    
 		    $scope.DoCreateUserAccount = function()

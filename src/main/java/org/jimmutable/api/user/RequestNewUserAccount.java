@@ -120,10 +120,10 @@ public class RequestNewUserAccount extends StandardImmutableObject<RequestNewUse
 	@Override
 	public void validate() 
 	{
-		FormValidator.nonBlank(FIELD_FIRST_NAME, first_name);
-		FormValidator.nonBlank(FIELD_LAST_NAME, last_name);
-		FormValidator.nonBlank(FIELD_EMAIL_ADDRESS, email_address);
-		FormValidator.nonBlank(FIELD_TIMEZONE, timezone);
+		FormValidator.nonBlank(FIELD_FIRST_NAME, first_name, "A first name is required");
+		FormValidator.nonBlank(FIELD_LAST_NAME, last_name, "A last name is required");
+		FormValidator.nonBlank(FIELD_EMAIL_ADDRESS, email_address, "A valid email address is required");
+		FormValidator.nonBlank(FIELD_TIMEZONE, timezone, "A timezone is requried");
 	}
 
 

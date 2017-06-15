@@ -28,7 +28,7 @@ public class FormErrorDetail extends StandardImmutableObject<FormErrorDetail>
 		if ( message == null ) message = "Unknown error";
 		
 		this.error_field = error_field.getSimpleName();
-		this.message = message;
+		this.message = message;	
 	}
 	
 	public String getSimpleErrorField() { return error_field; }
