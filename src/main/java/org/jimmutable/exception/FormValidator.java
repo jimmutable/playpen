@@ -9,7 +9,7 @@ public class FormValidator
 	{
 		if ( str != null && str.trim().length() != 0 ) return;
 		
-		FormValidationErrorDetail detail = new FormValidationErrorDetail(field, "This field is required");
+		FormErrorDetail detail = new FormErrorDetail(field, "This field is required");
 		
 		throw new FormValidationException(detail);
 	}

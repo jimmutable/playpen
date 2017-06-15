@@ -8,16 +8,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpStatus;
 import org.jimmutable.JSONPostReader;
+import org.jimmutable.core.serialization.Format;
+import org.jimmutable.exception.FormValidationException;
 
-@WebServlet(name="DoLogin", value="/api/1.0/users/create-new-user-account.html")
+@WebServlet(name="CreateNewUserAccount", value="/api/1.0/users/create-new-user-account.html")
 public class ServeletCreateNewUserAccount extends HttpServlet 
 {
-	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
+	public void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException 
 	{
-		JSONPostReader reader = new JSONPostReader(req);
-		
-		
+		try
+		{
+			JSONPostReader reader = new JSONPostReader(req, RequestNewUserAccount.TYPE_NAME);
+			System.out.println("JSON VALID: "+reader.getSimpleJsonValid());
+			System.out.println(reader);
+			
+			RequestNewUserAccount request = (RequestNewUserAccount)reader.getStandardImmutableObject();
+			
+			response.setStatus(HttpStatus.SC_OK);
+			
+			response.getWriter().print("ok");
+		}
+		catch(FormValidationException e)
+		{
+			response.setStatus(HttpStatus.SC_BAD_REQUEST);
+			response.getWriter().print(e.getSimpleErrorDetail().serialize(Format.JSON));
+		}
 	}
 
 }

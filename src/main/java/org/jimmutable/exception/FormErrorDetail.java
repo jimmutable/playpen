@@ -10,11 +10,11 @@ import org.jimmutable.core.serialization.writer.ObjectWriter;
 import org.jimmutable.core.utils.Comparison;
 import org.jimmutable.core.utils.Validator;
 
-public class FormValidationErrorDetail extends StandardImmutableObject<FormValidationErrorDetail> 
+public class FormErrorDetail extends StandardImmutableObject<FormErrorDetail> 
 {
-	static public FieldName FIELD_ERROR_GENERAL	= new FieldName("general_error");
+	static public final TypeName TYPE_NAME = new TypeName("form_error_detail"); public TypeName getTypeName() { return TYPE_NAME; }
 	
-	static public final TypeName TYPE_NAME = new TypeName("form_validation_error_detail"); public TypeName getTypeName() { return TYPE_NAME; }
+	static public FieldName FIELD_ERROR_GENERAL	= new FieldName("general_error");
 	
 	static public final FieldDefinition.String FIELD_ERROR_FIELD = new FieldDefinition.String("field",null);
 	static public final FieldDefinition.String FIELD_ERROR_MESSAGE = new FieldDefinition.String("message",null);
@@ -22,7 +22,7 @@ public class FormValidationErrorDetail extends StandardImmutableObject<FormValid
 	private String error_field;
 	private String message;
 	
-	public FormValidationErrorDetail(FieldName error_field, String message)
+	public FormErrorDetail(FieldName error_field, String message)
 	{
 		if ( error_field == null ) error_field = FIELD_ERROR_GENERAL;
 		if ( message == null ) message = "Unknown error";
@@ -42,7 +42,7 @@ public class FormValidationErrorDetail extends StandardImmutableObject<FormValid
 	}
 
 	@Override
-	public int compareTo(FormValidationErrorDetail o) 
+	public int compareTo(FormErrorDetail o) 
 	{
 		int ret = Comparison.startCompare();
 		
@@ -77,9 +77,9 @@ public class FormValidationErrorDetail extends StandardImmutableObject<FormValid
 	@Override
 	public boolean equals(Object obj) 
 	{
-		if ( !(obj instanceof FormValidationErrorDetail) ) return false;
+		if ( !(obj instanceof FormErrorDetail) ) return false;
 		
-		FormValidationErrorDetail other = (FormValidationErrorDetail)obj;
+		FormErrorDetail other = (FormErrorDetail)obj;
 		
 		if ( !this.getSimpleErrorField().equals(other.getSimpleErrorField()) ) return false;
 		if ( !this.getSimpleMessage().equals(other.getSimpleMessage()) ) return false;

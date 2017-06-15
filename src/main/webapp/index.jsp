@@ -32,7 +32,7 @@
 	      </fieldset>
 	
 	      <div class="d-flex justify-content-end">
-		  <div class="mr-auto p-2">Need an account? <a href="#">Sign up Today</a></div>
+		  <div class="mr-auto p-2">Need an account? <a href="/users/create-new-user-account.html">Sign up Today</a></div>
 		  <div class="p-2"><button type="button" class="btn btn-default" ng-click="DoLogin()">Login</button></div>
         
       </div>

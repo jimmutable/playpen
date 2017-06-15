@@ -6,6 +6,7 @@ import org.jimmutable.api.user.ResponseNewUserAccount;
 import org.jimmutable.core.serialization.JimmutableTypeNameRegister;
 import org.jimmutable.core.serialization.reader.ObjectParseTree;
 import org.jimmutable.data.UserAccount;
+import org.jimmutable.exception.FormErrorDetail;
 
 public class DigitalPandaTypeNameRegister 
 {
@@ -13,6 +14,9 @@ public class DigitalPandaTypeNameRegister
 	{
 		JimmutableTypeNameRegister.registerAllTypes();
 		ObjectParseTree.registerTypeName(AuthGetTokenResponse.class);
+		
+		ObjectParseTree.registerTypeName(FormErrorDetail.class);
+		
 		
 		ObjectParseTree.registerTypeName(UserAccount.class);
 		
