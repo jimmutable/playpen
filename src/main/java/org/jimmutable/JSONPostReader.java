@@ -2,6 +2,9 @@ package org.jimmutable;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.jimmutable.core.objects.StandardObject;
+import org.jimmutable.core.serialization.FieldName;
+import org.jimmutable.core.serialization.TypeName;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -9,12 +12,24 @@ public class JSONPostReader
 { 
 	private boolean json_valid;
 	private JSONObject json;
+	 
 	
 	public JSONPostReader(HttpServletRequest req)
 	{
+		this(req,null);
+	}
+	
+	public JSONPostReader(HttpServletRequest req, TypeName type)
+	{
 		try
 		{
-			json = new JSONObject(new JSONTokener(req.getReader())); 
+			json = new JSONObject(new JSONTokener(req.getReader()));
+			
+			if ( type != null && !json.has(FieldName.FIELD_NAME_TYPE_HINT.getSimpleName()) )
+			{
+				json.append(FieldName.FIELD_NAME_TYPE_HINT.getSimpleName(), type.getSimpleName());
+			}
+			
 			json_valid = true;
 		}
 		catch(Exception e)
@@ -38,5 +53,17 @@ public class JSONPostReader
 		if ( !json.has(key_name) ) return default_value;
 		
 		return json.getString(key_name);
+	}
+	
+	public StandardObject getStandardImmutableObject(StandardObject default_value)
+	{
+		try
+		{
+			return StandardObject.deserialize(json.toString());
+		}
+		catch(Exception e)
+		{
+			return default_value;
+		}
 	}
 }

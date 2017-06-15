@@ -9,21 +9,13 @@ import org.jimmutable.core.utils.Comparison;
 import org.jimmutable.core.utils.Normalizer;
 import org.jimmutable.core.utils.Optional;
 import org.jimmutable.core.utils.Validator;
-import org.jimmutable.datastore.DatastoreReader;
-import org.jimmutable.datastore.ObjectParseTreeReader;
-import org.jimmutable.datastore.ObjectReader;
+import org.jimmutable.exception.FormValidator;
 
 import com.google.api.client.util.Objects;
-import com.google.cloud.datastore.Entity;
 
-public class UserAccount extends StandardImmutableObject<UserAccount>
+public class RequestNewUserAccount extends StandardImmutableObject<RequestNewUserAccount>
 {
-	static public final long ID_NOT_ASSIGNED_YET = -1;
-	
-	
-	static public final TypeName TYPE_NAME = new TypeName("digitalpanada.user.account"); public TypeName getTypeName() { return TYPE_NAME; }
-	 
-	static public final FieldDefinition.Long FIELD_ID = new FieldDefinition.Long("id",ID_NOT_ASSIGNED_YET); 
+	static public final TypeName TYPE_NAME = new TypeName("digitalpanada.api.v1_0.users.request_new_user_account"); public TypeName getTypeName() { return TYPE_NAME; }
 	
 	static public final FieldDefinition.String FIELD_FIRST_NAME = new FieldDefinition.String("first_name",null); 
 	static public final FieldDefinition.String FIELD_LAST_NAME = new FieldDefinition.String("last_name",null); 
@@ -37,11 +29,8 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 	
 	static public final FieldDefinition.String FIELD_TIMEZONE = new FieldDefinition.String("timezone",null); 
 	
-	static public final FieldDefinition.Boolean FIELD_ACCOUNT_SUSPENDED = new FieldDefinition.Boolean("suspended",false);
-	static public final FieldDefinition.Boolean FIELD_IS_SYSTEM_ADMINISTRATOR = new FieldDefinition.Boolean("is_system_administrator",false); 
-	static public final FieldDefinition.Boolean FIELD_IS_SYSTEM_SUPPORT = new FieldDefinition.Boolean("is_system_support",false); 
+	static public final FieldDefinition.String FIELD_PASSWORD = new FieldDefinition.String("password",null); 
 	
-	private long id; // Required
 	
 	private String first_name; // Required
 	private String last_name; // Required
@@ -55,13 +44,10 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 	
 	private String timezone; // required
 	
-	private boolean is_account_suspended; // required 
-	private boolean is_system_administrator; // required
-	private boolean is_system_support; // required
+	private String password; // required
 	
-	public UserAccount(ObjectParseTree t)
+	public RequestNewUserAccount(ObjectParseTree t)
 	{
-		id = t.getLong(FIELD_ID);
 		
 		first_name = t.getString(FIELD_FIRST_NAME);
 		last_name = t.getString(FIELD_LAST_NAME);
@@ -75,13 +61,8 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 		
 		timezone = t.getString(FIELD_TIMEZONE);
 		
-		is_account_suspended = t.getBoolean(FIELD_ACCOUNT_SUSPENDED);
-		is_system_administrator = t.getBoolean(FIELD_IS_SYSTEM_ADMINISTRATOR);
-		
-		is_system_support = t.getBoolean(FIELD_IS_SYSTEM_SUPPORT);
+		password = t.getString(FIELD_PASSWORD);
 	}
-	
-	public long getSimpleID() { return id; }
 	
 	public String getSimpleFirstName() { return first_name; }
 	public String getSimpleLastName() { return last_name; }
@@ -90,9 +71,8 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 	
 	public String getSimpleTimezone() { return timezone; }
 	
-	public boolean getSimpleIsAccountSuspended() { return is_account_suspended; }
-	public boolean getSimpleIsSystemAdministrator() { return is_system_administrator; }
-	public boolean getSimpleIsSystemSupport() { return is_system_support; }
+	public String getSimplePassword() { return password; }
+	
 	
 	public boolean hasMobilePhoneNumber() { return Optional.has(phone_number_mobile, null); }
 	public boolean hasWorkPhoneNumber() { return Optional.has(phone_number_work, null); }
@@ -105,8 +85,6 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 
 	public void write(ObjectWriter writer) 
 	{
-		writer.writeLong(FIELD_ID, id);
-		
 		writer.writeString(FIELD_FIRST_NAME, getSimpleFirstName());
 		writer.writeString(FIELD_LAST_NAME, getSimpleLastName());
 		
@@ -118,13 +96,9 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 		writer.writeString(FIELD_WORK_PHONE_NUMBER, getOptionalWorkPhoneNumber(null));
 		
 		writer.writeString(FIELD_TIMEZONE, getSimpleTimezone());
-		
-		writer.writeBoolean(FIELD_ACCOUNT_SUSPENDED, getSimpleIsAccountSuspended());
-		writer.writeBoolean(FIELD_IS_SYSTEM_ADMINISTRATOR, getSimpleIsSystemAdministrator());
-		writer.writeBoolean(FIELD_IS_SYSTEM_SUPPORT, getSimpleIsSystemSupport());
 	}
 
-	public int compareTo(UserAccount o) 
+	public int compareTo(RequestNewUserAccount o) 
 	{
 		int ret = Comparison.startCompare();
 		
@@ -146,24 +120,24 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 	@Override
 	public void validate() 
 	{
-		Validator.notNull(first_name, last_name, email_address, timezone);
+		FormValidator.nonBlank(FIELD_FIRST_NAME, first_name);
+		FormValidator.nonBlank(FIELD_LAST_NAME, last_name);
+		FormValidator.nonBlank(FIELD_EMAIL_ADDRESS, email_address);
+		FormValidator.nonBlank(FIELD_TIMEZONE, timezone);
 	}
 
 
 	public int hashCode() 
 	{
-		return Long.hashCode(id);
+		return getSimpleEmailAddress().hashCode();
 	}
 
 
 	public boolean equals(Object obj) 
 	{
-		if ( !(obj instanceof UserAccount) )  return false;
-		
-		
-		UserAccount other = (UserAccount)obj;
-		
-		if ( this.getSimpleID() != other.getSimpleID() ) return false;
+		if ( !(obj instanceof RequestNewUserAccount) )  return false;
+	
+		RequestNewUserAccount other = (RequestNewUserAccount)obj;
 		
 		if ( !Objects.equal(this.getSimpleFirstName(), other.getSimpleFirstName()) ) return false;
 		if ( !Objects.equal(this.getSimpleLastName(), other.getSimpleLastName()) ) return false;
@@ -177,14 +151,8 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 		
 		if ( !Objects.equal(this.getSimpleTimezone(), other.getSimpleTimezone()) ) return false;
 		
-		if ( this.getSimpleIsAccountSuspended() != other.getSimpleIsAccountSuspended() ) return false;
-		if ( this.getSimpleIsSystemAdministrator() != other.getSimpleIsSystemAdministrator() ) return false;
-		if ( this.getSimpleIsSystemSupport() != other.getSimpleIsSystemSupport() ) return false;
+		if ( !Objects.equal(this.getSimplePassword(), other.getSimplePassword()) ) return false;
 		
 		return true;
 	}
-	
-	
 }
-
-
