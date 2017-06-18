@@ -1,5 +1,6 @@
 package org.jimmutable.data;
 
+import org.jimmutable.api.user.RequestNewUserAccount;
 import org.jimmutable.core.objects.StandardImmutableObject;
 import org.jimmutable.core.serialization.FieldDefinition;
 import org.jimmutable.core.serialization.TypeName;
@@ -79,6 +80,31 @@ public class UserAccount extends StandardImmutableObject<UserAccount>
 		is_system_administrator = t.getBoolean(FIELD_IS_SYSTEM_ADMINISTRATOR);
 		
 		is_system_support = t.getBoolean(FIELD_IS_SYSTEM_SUPPORT);
+	}
+	
+	public UserAccount(RequestNewUserAccount request)
+	{
+		Validator.notNull(request);
+		
+		id = Math.abs((long)(Math.random()*Long.MAX_VALUE));
+		
+		first_name = request.getSimpleFirstName();
+		last_name = request.getSimpleLastName();
+		
+		email_address = request.getSimpleEmailAddress();
+		
+		title = request.getOptionalTitle(null);
+		
+		phone_number_mobile = request.getOptionalMobilePhoneNumber(null);
+		phone_number_work = request.getOptionalWorkPhoneNumber(null);
+		
+		timezone = request.getSimpleTimezone();
+		
+		is_account_suspended = false;
+		is_system_administrator = false;
+		is_system_support = false;
+		
+		complete();
 	}
 	
 	public long getSimpleID() { return id; }

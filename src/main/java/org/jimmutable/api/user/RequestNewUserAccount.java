@@ -8,7 +8,8 @@ import org.jimmutable.core.serialization.writer.ObjectWriter;
 import org.jimmutable.core.utils.Comparison;
 import org.jimmutable.core.utils.Normalizer;
 import org.jimmutable.core.utils.Optional;
-import org.jimmutable.core.utils.Validator;
+import org.jimmutable.exception.FormErrorDetail;
+import org.jimmutable.exception.FormValidationException;
 import org.jimmutable.exception.FormValidator;
 
 import com.google.api.client.util.Objects;
@@ -115,6 +116,20 @@ public class RequestNewUserAccount extends StandardImmutableObject<RequestNewUse
 	public void normalize() 
 	{
 		email_address = Normalizer.lowerCase(email_address);
+		
+		first_name = Normalizer.trim(first_name);
+		last_name = Normalizer.trim(last_name);
+		
+		email_address = Normalizer.trim(email_address);
+		
+		title = Normalizer.trim(title);
+		
+		phone_number_mobile = Normalizer.trim(phone_number_mobile);
+		phone_number_work = Normalizer.trim(phone_number_work);
+		
+		timezone = Normalizer.trim(timezone);
+		
+		password = Normalizer.trim(password);
 	}
 
 	@Override
@@ -124,6 +139,13 @@ public class RequestNewUserAccount extends StandardImmutableObject<RequestNewUse
 		FormValidator.nonBlank(FIELD_LAST_NAME, last_name, "A last name is required");
 		FormValidator.nonBlank(FIELD_EMAIL_ADDRESS, email_address, "A valid email address is required");
 		FormValidator.nonBlank(FIELD_TIMEZONE, timezone, "A timezone is requried");
+		
+		FormValidator.nonBlank(FIELD_PASSWORD, password, "A password (case sensative, minimum of 5 characters) is requried");
+		
+		if ( password.length() < 5 )
+		{
+			throw new FormValidationException(new FormErrorDetail(FIELD_PASSWORD.getSimpleFieldName(), "A password (case sensative, minimum of 5 characters) is requried"));
+		}
 	}
 
 

@@ -75,8 +75,6 @@
 		  <div class="p-2"><button type="button" class="btn btn-default" ng-click="DoCreateUserAccount()">Create</button></div>
         
       </div>
-      
-      {{ formData }}
 
       </form>
 
@@ -98,7 +96,7 @@
 		    
 		    var formSuccess = function(response)
 		    {
-		    	alert('Login Success: '+response.data);
+		    	alert('Create Success!'+response.data);
 		    	console.log(response);
 		   	}
 		   	
@@ -112,6 +110,12 @@
 		    
 		    $scope.DoCreateUserAccount = function()
 		    {
+		    	if ( $scope.formData.password == null || $scope.formData.password.length < 5 || $scope.formData.password != $scope.formData.confirm_password )
+		    	{
+		    		alert('Passwords do not match or are less than 5 characters');
+		    		return;
+		    	}
+		    
 		    	var res = $http({
 		    		method: "post",
 		    		url: "/api/1.0/users/create-new-user-account.html",

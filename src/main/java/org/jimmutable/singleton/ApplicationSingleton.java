@@ -12,4 +12,6 @@ public class ApplicationSingleton
 	}
 	
 	public UserAccountDB getSimpleUserAccountDB() { return user_account_db; }
+	
+	static public ApplicationSingleton get() { return singleton; }
 }

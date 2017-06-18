@@ -3,6 +3,7 @@ package org.jimmutable.singleton;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jimmutable.api.user.RequestNewUserAccount;
 import org.jimmutable.data.UserAccount;
 
 public class UserAccountDB 
@@ -43,5 +44,18 @@ public class UserAccountDB
 		}
 		
 		return default_value;
+	}
+	
+	public UserAccount createNewUserAccount(RequestNewUserAccount request)
+	{
+		while(true)
+		{
+			UserAccount new_account = new UserAccount(request);
+			if ( accounts.containsKey(new_account) ) continue;
+			
+			accounts.put(new_account.getSimpleID(), new_account);
+			
+			return new_account;
+		}
 	}
 }
